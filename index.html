@@ -4,16 +4,14 @@
     <meta charset="utf-8">
     <title>Timer</title>
     <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="beepHack.js"></script>
     <style type="text/css">
         html, body {
             margin: 0;
             padding: 0;
         }
-        body {
-            /*transition: background-color .5s ease;*/
-        }
-        #stop {
-            padding: 20px;
+        #stop, #unmute {
+            font-size: 40px;
             cursor: pointer;
 
         }
@@ -43,6 +41,11 @@
             var body = $('body');
             var clockBlock = $('#clock');
             var beep = $('#beep')[0];
+            var unmute = $('#unmute');
+            unmute.click(function () {
+                beep.load();
+            });
+
             clockBlock.click(function () {
                 reset();
             });
@@ -104,6 +107,7 @@
 </head>
 <body>
     <button id="stop">Stop</button>
+    <button id="unmute">Unmute</button>
     <div id="clock" class="vertical-center"></div>
     <audio id="beep" src="beep.mp3"></audio>
 </body>
