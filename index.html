@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Timer</title>
+    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            /*transition: background-color .5s ease;*/
+        }
+        #stop {
+            padding: 20px;
+            cursor: pointer;
+
+        }
+        .vertical-center {
+            background-color: rgba(255, 0, 0, 0);
+            transition: background-color .5s ease;
+            position: absolute;
+            width: 100%;
+            padding: 25px 0;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Roboto;
+            font-size: 100px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function pad(n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            }
+
+            var body = $('body');
+            var clockBlock = $('#clock');
+            clockBlock.click(function () {
+                reset();
+            });
+            $('#stop').click(function () {
+                stop();
+            });
+
+            var countdownStartValue = 10;
+            var countdownCurrentValue = 0;
+            var interval;
+
+            function stop() {
+                countdownCurrentValue = countdownStartValue;
+                clearInterval(interval);
+                clockBlock.html(
+                    pad(
+                        countdownCurrentValue.toFixed(1),
+                        Math.floor(countdownStartValue).toFixed(1).length
+                    )
+                ).css('background-color', 'rgba(255,0,0,0)');
+            }
+
+            function reset() {
+                stop();
+                var intervalStep = 50;
+                interval = setInterval(function () {
+                    countdownCurrentValue -= intervalStep / 1000;
+                    if (countdownCurrentValue <= 0) {
+                        body.css('background', 'red');
+                        setTimeout(function() {
+                            body.css('background', 'transparent');
+                        }, 200);
+                        stop();
+                    }
+                    var procent = (countdownStartValue - countdownCurrentValue) / countdownStartValue;
+                    clockBlock.html(
+                        pad(
+                            countdownCurrentValue.toFixed(1),
+                            Math.floor(countdownStartValue).toFixed(1).length
+                        )
+                    ).css('background-color', 'rgba(255,0,0,' + procent.toFixed(2) + ')');
+                }, intervalStep);
+            }
+            stop();
+        });
+    </script>
+</head>
+<body>
+    <button id="stop">Stop</button>
+    <div id="clock" class="vertical-center"></div>
+</body>
+</html>
