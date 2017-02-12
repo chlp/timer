@@ -73,8 +73,11 @@
                         body.css('background', 'red');
                         setTimeout(function() {
                             body.css('background', 'transparent');
-                        }, 200);
+                        }, 500);
                         stop();
+                        setTimeout(function () {
+                            reset();
+                        }, 500);
                     }
                     var procent = (countdownStartValue - countdownCurrentValue) / countdownStartValue;
                     clockBlock.html(
@@ -86,6 +89,14 @@
                 }, intervalStep);
             }
             stop();
+
+            document.addEventListener('keydown', function(event) {
+                if ([32, 13].includes(event.which)) {
+                    reset();
+                } else if ([27].includes(event.which)) {
+                    stop();
+                }
+            });
         });
     </script>
 </head>
