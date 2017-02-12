@@ -42,6 +42,7 @@
 
             var body = $('body');
             var clockBlock = $('#clock');
+            var beep = $('#beep')[0];
             clockBlock.click(function () {
                 reset();
             });
@@ -74,6 +75,7 @@
                         setTimeout(function() {
                             body.css('background', 'transparent');
                         }, 500);
+                        beep.play();
                         stop();
                         setTimeout(function () {
                             reset();
@@ -103,5 +105,6 @@
 <body>
     <button id="stop">Stop</button>
     <div id="clock" class="vertical-center"></div>
+    <audio id="beep" src="beep.mp3"></audio>
 </body>
 </html>
