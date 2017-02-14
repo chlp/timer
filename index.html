@@ -12,7 +12,13 @@
         #stop, #unmute {
             font-size: 40px;
             cursor: pointer;
-
+        }
+        #unmute {
+            display: none;
+        }
+        #stop {
+            opacity: 0;
+            transition: opacity .5s ease;
         }
         .vertical-center {
             background-color: rgba(255, 0, 0, 0);
@@ -24,7 +30,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: Roboto;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;;
             font-size: 100px;
             cursor: pointer;
         }
@@ -40,15 +46,20 @@
             var body = $('body');
             var clockBlock = $('#clock');
             var beep = $('#beep')[0];
+            var stopBtn = $('#stop');
             var unmute = $('#unmute');
             unmute.click(function () {
                 beep.load();
             });
 
+            if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+                unmute.show();
+            }
+
             clockBlock.click(function () {
                 reset();
             });
-            $('#stop').click(function () {
+            stopBtn.click(function () {
                 stop();
             });
 
@@ -65,6 +76,7 @@
             }
 
             function stop() {
+                stopBtn.css('opacity', '0');
                 countdownCurrentValue = countdownStartValue;
                 clearInterval(interval);
                 clockBlock.html(
@@ -75,6 +87,7 @@
 
             function reset() {
                 stop();
+                stopBtn.css('opacity', '1');
                 startTs = +new Date;
                 var intervalStep = 50;
                 interval = setInterval(function () {
