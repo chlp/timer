@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Timer</title>
     <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="beepHack.js"></script>
     <style type="text/css">
         html, body {
             margin: 0;
@@ -56,23 +55,30 @@
             var countdownStartValue = 10;
             var countdownCurrentValue = 0;
             var interval;
+            var startTs;
+
+            function stylizingValue(current, first) {
+                return pad(
+                    current.toFixed(1),
+                    Math.floor(first).toFixed(1).length
+                );
+            }
 
             function stop() {
                 countdownCurrentValue = countdownStartValue;
                 clearInterval(interval);
                 clockBlock.html(
-                    pad(
-                        countdownCurrentValue.toFixed(1),
-                        Math.floor(countdownStartValue).toFixed(1).length
-                    )
+                    stylizingValue(countdownCurrentValue, countdownStartValue)
                 ).css('background-color', 'rgba(255,0,0,0)');
+                document.title = '⏱ ' + stylizingValue(countdownCurrentValue, countdownStartValue);
             }
 
             function reset() {
                 stop();
+                startTs = +new Date;
                 var intervalStep = 50;
                 interval = setInterval(function () {
-                    countdownCurrentValue -= intervalStep / 1000;
+                    countdownCurrentValue = countdownStartValue - (+new Date - startTs) / 1000;
                     if (countdownCurrentValue <= 0) {
                         body.css('background', 'red');
                         setTimeout(function() {
@@ -86,11 +92,9 @@
                     }
                     var procent = (countdownStartValue - countdownCurrentValue) / countdownStartValue;
                     clockBlock.html(
-                        pad(
-                            countdownCurrentValue.toFixed(1),
-                            Math.floor(countdownStartValue).toFixed(1).length
-                        )
+                        stylizingValue(countdownCurrentValue, countdownStartValue)
                     ).css('background-color', 'rgba(255,0,0,' + procent.toFixed(2) + ')');
+                    document.title = '⏱ ' + stylizingValue(countdownCurrentValue, countdownStartValue);
                 }, intervalStep);
             }
             stop();
