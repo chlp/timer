@@ -1,5 +1,7 @@
 require('file-loader?name=[name].[ext]!./index.html');
 require('file-loader?name=[name].[ext]!./beep.mp3');
+require('style-loader!css-loader?minimize!./stylesheet.css');
+
 
 var $ = require('jquery');
 
